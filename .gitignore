@@ -67,6 +67,13 @@ wheels/
 *.egg
 *.manifest
 *.spec
+.spyproject
+spyder_crash.log
+.idea/
+.cache
+.coverage*
+MANIFEST
+.boot_branch.txt
 
 # Installer logs
 pip-log.txt
