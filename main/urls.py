@@ -17,13 +17,14 @@ Including another URLconf
 
 from django.urls import path
 from . import views
+
 app_name= "main"
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path("showPlaylist/<int:playlistID>", views.playlist, name="playlist"),
-    path("showPlaylist/addNew", views.addNewPlaylist, name="addNewPlaylist"),
-    path("like/<int:songID>", views.likesong, name="likesong"),
-
-    path("")
+    path('register/', views.user_register, name='register'),
+    path('login/', views.user_login, name='login'),
+    # path("showPlaylist/<int:playlistID>", views.playlist, name="playlist"),
+    # path("showPlaylist/addNew", views.addNewPlaylist, name="addNewPlaylist"),
+    # path("like/<int:songID>", views.likesong, name="likesong"),
 ]

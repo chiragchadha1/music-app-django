@@ -11,17 +11,19 @@ def home(request):
 def user_register(request):
     if request.method == 'POST':
         username = request.POST['username']
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
         password = request.POST['password']
-        email = request.POST.get('email')  # Optional
+        email = request.POST.get('email')
 
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already exists')
-            return redirect('register')
+            return redirect('main:register')
 
-        user = User.objects.create_user(username=username, password=password, email=email)
+        user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, password=password, email=email)
         user.save()
         login(request, user)
-        return redirect('home')  # Redirect to a home page or another appropriate page
+        return redirect('main:home')  # Redirect to a home page or another appropriate page
 
     return render(request, 'register.html')  # Path to your registration template
 
