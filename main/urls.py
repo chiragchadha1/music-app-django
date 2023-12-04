@@ -24,6 +24,6 @@ urlpatterns = [
     path("showPlaylist/<int:playlistID>", views.playlist, name="playlist"),
     path("showPlaylist/addNew", views.addNewPlaylist, name="addNewPlaylist"),
     path("like/<int:songID>", views.likesong, name="likesong"),
-    
+
     path("")
 ]
