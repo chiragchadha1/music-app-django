@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Songs</h2>
+    <!-- Song Grid -->
+    <div class="row">
+        {% for song in songs %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ song.title }}</h5>
+                    <!-- Other song details -->
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <div>No songs found.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -4,8 +4,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 
+from .models import Artist, Playlist, Song
+
 def home(request):
-    return render(request, 'home.html')
+    songs = Song.objects.all()
+    artists = Artist.objects.all()
+    playlists = Playlist.objects.all()
+    context = {
+        'songs': songs,
+        'artists': artists,
+        'playlists': playlists
+    }
+    return render(request, 'home.html', context)
 
 # User Registration
 def user_register(request):
@@ -44,5 +54,19 @@ def user_login(request):
 
 def logout_view(request):
     logout(request)
-    # Redirect to a success page, home page, or login page after logout
-    return redirect('main:home')  # Replace 'home' with the name of the view you want to redirect to
+    return redirect('main:home')
+
+def show_artists(request):
+    artists = Artist.objects.all()
+    context = {'artists': artists}
+    return render(request, 'artists.html', context)
+
+def show_playlists(request):
+    playlists = Playlist.objects.all()
+    context = {'playlists': playlists}
+    return render(request, 'playlists.html', context)
+
+def show_songs(request):
+    songs = Song.objects.all()
+    context = {'songs': songs}
+    return render(request, 'songs.html', context)
