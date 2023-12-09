@@ -1,11 +1,21 @@
-from django.shortcuts import render
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
+from django.http import JsonResponse
+
+from .models import Artist, Playlist, Song, Like
 
 def home(request):
-    return render(request, 'index.html')
+    songs = Song.objects.all()
+    artists = Artist.objects.all()
+    playlists = Playlist.objects.all()
+    context = {
+        'songs': songs,
+        'artists': artists,
+        'playlists': playlists
+    }
+    return render(request, 'home.html', context)
 
 # User Registration
 def user_register(request):
@@ -36,9 +46,38 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')  # Redirect to a home page or another appropriate page
+            return redirect('main:home')  # Redirect to a home page or another appropriate page
         else:
             messages.error(request, 'Invalid username or password')
 
     return render(request, 'login.html')  # Path to your login template
 
+def logout_view(request):
+    logout(request)
+    return redirect('main:home')
+
+def show_artists(request):
+    artists = Artist.objects.all()
+    context = {'artists': artists}
+    return render(request, 'artists.html', context)
+
+def show_playlists(request):
+    playlists = Playlist.objects.all()
+    context = {'playlists': playlists}
+    return render(request, 'playlists.html', context)
+
+def show_songs(request):
+    songs = Song.objects.all()
+    context = {'songs': songs}
+    return render(request, 'songs.html', context)
+
+def like_song(request, song_id):
+    song = get_object_or_404(Song, pk=song_id)
+    # Assuming the user is logged in and authenticated
+    if request.user.is_authenticated:
+        like, created = Like.objects.get_or_create(user=request.user, song=song)
+        if not created:
+            like.delete()
+        return JsonResponse({'liked': created})
+    else:
+        return JsonResponse({'error': 'User not authenticated'}, status=401)

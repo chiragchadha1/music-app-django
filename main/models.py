@@ -27,6 +27,10 @@ class Song(models.Model):
 
         string=f"{self.title}"
         return string
+    
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    song = models.ForeignKey(Song, on_delete=models.CASCADE)
 
 class Playlist(models.Model):
 
