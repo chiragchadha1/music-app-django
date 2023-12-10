@@ -70,3 +70,14 @@ def show_songs(request):
     songs = Song.objects.all()
     context = {'songs': songs}
     return render(request, 'songs.html', context)
+
+def chooseArtist(request, artistID):
+    
+    artistObject = Artist.objects.get(id = artistID)
+  
+    songsList = artistObject.song_set.all()
+    
+    context ={"list_of_songs": songsList, "artist_name": artistObject.name, "followers": artistObject.followers}
+    
+    return render(request, "showArtist.html", context)
+

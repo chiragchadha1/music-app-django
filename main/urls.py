@@ -26,6 +26,7 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('artists/', views.show_artists, name='artists'),
+    path("artist/<int:artistID>", views.chooseArtist, name="chooseArtist"),
     path('playlists/', views.show_playlists, name='playlists'),
     path('songs/', views.show_songs, name='songs'),
     # path("show_playlist/<int:playlistID>", views.show_playlist, name="playlist"),

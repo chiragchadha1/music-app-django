@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{ artist.name }}</h5>
-                    <!-- Other artist details -->
+                    <a href="{% url 'main:chooseArtist' artist.id %}" class="btn btn-primary">View Artist</a>
                 </div>
             </div>
         </div>
