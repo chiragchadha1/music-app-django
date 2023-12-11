@@ -27,10 +27,21 @@ class Song(models.Model):
 
         string=f"{self.title}"
         return string
-    
+
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Get or create the special "Liked Songs" playlist for the user
+        playlist, _ = Playlist.objects.get_or_create(name="Liked Songs", creator=self.user)
+        playlist.songs.add(self.song)  # Add the liked song to the playlist
+
+    def delete(self, *args, **kwargs):
+        playlist = Playlist.objects.get(name="Liked Songs", creator=self.user)
+        playlist.songs.remove(self.song)  # Remove the unliked song from the playlist
+        super().delete(*args, **kwargs)
 
 class Playlist(models.Model):
 
@@ -49,5 +60,4 @@ class LikedSong(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     #song: FK - each liked song is associated with one song
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
-    
-    
+

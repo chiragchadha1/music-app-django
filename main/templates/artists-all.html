@@ -33,7 +33,7 @@
     <div class="row">
         {% for artist in artists %}
         <div class="col-md-4">
-            <a href="{% url 'main:choose_artist' artist.id %}" class="clickable-card">
+            <a href="{% url 'main:show_single_artist' artist.id %}" class="clickable-card">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{ artist.name }}</h5>

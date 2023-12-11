@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ playlist.name }}</h2>
+    {% if playlist.songs.all %}
+        <div class="row">
+            {% for song in playlist.songs.all %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ song.title }}</h5>
+                        <p class="mb-0">Artist: {{ song.artists.all|join:", " }}</p>
+                        <p class="mb-0">Album: {{ song.album }}</p>
+                        <p>Duration: {{ song.duration }}</p>
+                        <form method="post" action="{% url 'main:like_unlike_song' song.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn {% if song.id in liked_song_ids %}btn-danger{% else %}btn-success{% endif %}">
+                                {% if song.id in liked_song_ids %}Unlike{% else %}Like{% endif %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No liked songs yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ playlist.name }}</h2>
+
+    <!-- Displaying Songs in the Playlist -->
+    <div class="row">
+        <h4>Songs in Playlist</h4>
+        {% for song in songs_in_playlist %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ song.title }}</h5>
+                    <p class="mb-0">Artist: {{ song.artists.all|join:", " }}</p>
+                    <p class="mb-0">Album: {{ song.album }}</p>
+                    <p>Duration: {{ song.duration }}</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="song_id" value="{{ song.id }}">
+                        <button type="submit" name="remove_song" class="btn btn-danger">Remove</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No songs in this playlist.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Add Songs to Playlist -->
+    <div class="row mt-4">
+        <h4>All Songs in Database</h4>
+        {% if filtered_songs %}
+        {% for song in filtered_songs %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ song.title }}</h5>
+                        <p class="mb-0">Artist: {{ song.artists.all|join:", " }}</p>
+                        <p class="mb-0">Album: {{ song.album }}</p>
+                        <p>Duration: {{ song.duration }}</p>
+                        <div class="row">
+                                <form method="post" action="{% url 'main:like_unlike_song' song.id %}" style="width:fit-content;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn {% if song.id in liked_song_ids %}btn-danger{% else %}btn-success{% endif %}">
+                                        {% if song.id in liked_song_ids %}Unlike{% else %}Like{% endif %}
+                                    </button>
+                                </form>
+                            <!-- Add song form -->
+                            <form method="post" style="width:fit-content;">
+                                {% csrf_token %}
+                                <input type="hidden" name="song_id" value="{{ song.id }}">
+                                <button type="submit" name="add_song" class="btn btn-primary">Add to Playlist</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-md-12">
+                <p>All songs in the database have been added to your playlist.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
