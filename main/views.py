@@ -77,9 +77,15 @@ def logout_view(request):
     return redirect('main:home')
 
 def show_single_artist(request, artistID):
-    artistObject = Artist.objects.get(id = artistID)
+    artistObject = Artist.objects.get(id=artistID)
     songsList = artistObject.song_set.all()
-    context ={"list_of_songs": songsList, "artist_name": artistObject.name, "followers": artistObject.followers}
+    followers_count = artistObject.followers.count()  # Count the followers
+    context = {
+        "list_of_songs": songsList,
+        "artist_name": artistObject.name,
+        "followers": followers_count,  # Pass the count instead of the queryset
+        "artist": artistObject  # Pass the artist object to the template
+    }
     return render(request, "artist.html", context)
 
 @login_required

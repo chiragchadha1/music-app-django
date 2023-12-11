@@ -1,30 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{artist_name}}</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+<div class="container mt-4">
+    <h2>{{ artist_name }}</h2>
+    <p><b>Followers:</b> {{ followers }}</p>
 
-<body>
-
-    <div class="container">
-        <h1 class="display-4 text-center">{{artist_name}}</h1>
-
-        <p class="lead text-center">Here are all {{artist_name}}'s songs. The artist has {{followers}} followers.</p>
-
-        <ul class="list-group">
-            {% for song in list_of_songs %}
-            <li class="list-group-item">{{song.title}}</li>
-            {% endfor %}
-        </ul>
+    <!-- Artist's Songs -->
+    <h3 class="mt-4 mb-3">Songs by {{ artist_name }}</h3>
+    <div class="row">
+        {% for song in list_of_songs %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ song.title }}</h5>
+                    <p class="card-text">Album: {{ song.album }}</p>
+                    <p class="card-text">Duration: {{ song.duration }}</p>
+                    <!-- Additional song details can be added here -->
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">No songs available for this artist.</p>
+        {% endfor %}
     </div>
+</div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+{% endblock %}
