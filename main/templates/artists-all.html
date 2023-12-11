@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .clickable-card {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .clickable-card:hover {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .clickable-card .card {
+        transition: border-color 0.3s;
+    }
+
+    .clickable-card:hover .card {
+        border-color: var(--bs-primary);
+    }
+
+    .clickable-card .card-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+</style>
+
+<div class="container mt-4">
+    <h2 class="no-underline">Artists</h2>
+    <!-- Artist Grid -->
+    <div class="row">
+        {% for artist in artists %}
+        <div class="col-md-4">
+            <a href="{% url 'main:choose_artist' artist.id %}" class="clickable-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ artist.name }}</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
