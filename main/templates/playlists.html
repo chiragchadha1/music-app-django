@@ -1,8 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container mt-4">
-    <h2>Playlists</h2>
+    <h1>Playlists</h1>
+    <!--Liked Songs Playlist-->
+    <h2>Liked Songs Playlist</h2>
+    <ul>
+        {% for liked_song in liked_songs %}
+            <li>
+                {{ liked_song.song.title }} - {{ liked_song.song.artist }}
+                <form action="{% url 'unlike_song' liked_song.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit"class="btn btn-outline-danger">Remove from Liked Songs</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <!-- Create a new playlist -->
+    <div class="container">
+        <h2>Create Playlist</h2>
+        <form action="{% url 'main:addNewPlaylist' %}"method="post" class="form-group">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-outline-success">Create Playlist</button>
+        </form>
+    </div>
     <!-- Playlist Grid -->
+    <h2>Other Playlists</h2>
     <div class="row">
         {% for playlist in playlists %}
         <div class="col-md-4">
@@ -10,6 +33,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ playlist.name }}</h5>
                     <!-- Other playlist details -->
+
                 </div>
             </div>
         </div>

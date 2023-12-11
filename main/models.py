@@ -31,7 +31,7 @@ class Song(models.Model):
 class Playlist(models.Model):
 
     name=models.CharField(max_length=20)
-    duration=models.DurationField()
+    duration = models.IntegerField(blank=True, null=True)
     songs=models.ManyToManyField(Song)
     creator=models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -40,4 +40,10 @@ class Playlist(models.Model):
         string=f"{self.name}"
         return string
 
-
+class LikedSong(models.Model):
+    #user: FK - each liked song is associated with one User
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    #song: FK - each liked song is associated with one song
+    song = models.ForeignKey(Song, on_delete=models.CASCADE)
+    
+    

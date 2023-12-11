@@ -26,9 +26,14 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('artists/', views.show_artists, name='artists'),
-    path('playlists/', views.show_playlists, name='playlists'),
-    path('songs/', views.show_songs, name='songs'),
-    # path("show_playlist/<int:playlistID>", views.show_playlist, name="playlist"),
-    # path("showPlaylist/addNew", views.addNewPlaylist, name="addNewPlaylist"),
+    path('playlists/', views.playlists, name='playlists'),
+    path('songs/', views.show_songs, name='show_songs'),
+    path('about/', views.about, name='about'),
+    path('like_song/', views.like_song, name='like_song'),
+    #path('liked_songs/', views.view_liked_songs, name='view_liked_songs'),
+    path("playlists/<int:playlistID>", views.show_playlists, name="show_playlists"),
+    path("playlists/addNew", views.addNewPlaylist, name="addNewPlaylist"),
     # path("like/<int:songID>", views.likesong, name="likesong"),
+    # path('unlike_song/<int:liked_song_id>/', views.unlike_song, name='unlike_song'),
+    
 ]
