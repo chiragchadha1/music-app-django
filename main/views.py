@@ -9,7 +9,13 @@ from .models import Artist, Playlist, Song, Like
 def home(request):
     songs = Song.objects.all()
     artists = Artist.objects.all()
-    playlists = Playlist.objects.all()
+
+    # Only include playlists in the context if the user is logged in
+    if request.user.is_authenticated:
+        playlists = Playlist.objects.filter(creator=request.user)
+    else:
+        playlists = None
+
     context = {
         'songs': songs,
         'artists': artists,
@@ -56,32 +62,30 @@ def logout_view(request):
     logout(request)
     return redirect('main:home')
 
-def show_artists(request):
-    artists = Artist.objects.all()
-    context = {'artists': artists}
-    return render(request, 'artists.html', context)
+# def show_artists(request):
+#     artists = Artist.objects.all()
+#     context = {'artists': artists}
+#     return render(request, 'artists-all.html', context)
 
-def show_playlists(request):
-    playlists = Playlist.objects.all()
-    context = {'playlists': playlists}
-    return render(request, 'playlists.html', context)
+# def show_playlists(request):
+#     if not request.user.is_authenticated:
+#         return redirect('main:login')  # Redirect to login if user is not authenticated
 
-def show_songs(request):
-    songs = Song.objects.all()
-    context = {'songs': songs}
-    return render(request, 'songs.html', context)
+#     # Only display playlists that belong to the logged-in user
+#     playlists = Playlist.objects.filter(creator=request.user)
+#     context = {'playlists': playlists}
+#     return render(request, 'playlists.html', context)
 
-def chooseArtist(request, artistID):
+# def show_songs(request):
+#     songs = Song.objects.all()
+#     context = {'songs': songs}
+#     return render(request, 'songs.html', context)
 
+def choose_artist(request, artistID):
     artistObject = Artist.objects.get(id = artistID)
-
     songsList = artistObject.song_set.all()
-
     context ={"list_of_songs": songsList, "artist_name": artistObject.name, "followers": artistObject.followers}
-
-    return render(request, "showArtist.html", context)
-
-
+    return render(request, "artist.html", context)
 
 def like_song(request, song_id):
     song = get_object_or_404(Song, pk=song_id)

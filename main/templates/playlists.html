@@ -4,16 +4,22 @@
     <h2>Playlists</h2>
     <!-- Playlist Grid -->
     <div class="row">
-        {% for playlist in playlists %}
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ playlist.name }}</h5>
-                    <!-- Other playlist details -->
+        {% if playlists %}
+            {% for playlist in playlists %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ playlist.name }}</h5>
+                        <!-- Other playlist details -->
+                    </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <div class="col-md-12">
+                <p>Please <a href="{% url 'main:login' %}">log in</a> or <a href="{% url 'main:register' %}">register</a> to see your playlists.</p>
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
