@@ -16,7 +16,7 @@ Including another URLconf
 """
 
 from django.urls import path
-from . import views
+from .import views
 
 app_name= "main"
 
@@ -32,4 +32,5 @@ urlpatterns = [
     # path("show_playlist/<int:playlistID>", views.show_playlist, name="playlist"),
     # path("showPlaylist/addNew", views.addNewPlaylist, name="addNewPlaylist"),
     # path("like/<int:songID>", views.likesong, name="likesong"),
+    path('song/<int:song_id>/like/', views.like_song, name='like_song'),
 ]

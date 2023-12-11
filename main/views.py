@@ -1,10 +1,10 @@
-from django.shortcuts import render
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
+from django.http import JsonResponse
 
-from .models import Artist, Playlist, Song
+from .models import Artist, Playlist, Song, Like
 
 def home(request):
     songs = Song.objects.all()
@@ -72,12 +72,24 @@ def show_songs(request):
     return render(request, 'songs.html', context)
 
 def chooseArtist(request, artistID):
-    
+
     artistObject = Artist.objects.get(id = artistID)
-  
+
     songsList = artistObject.song_set.all()
-    
+
     context ={"list_of_songs": songsList, "artist_name": artistObject.name, "followers": artistObject.followers}
-    
+
     return render(request, "showArtist.html", context)
 
+
+
+def like_song(request, song_id):
+    song = get_object_or_404(Song, pk=song_id)
+    # Assuming the user is logged in and authenticated
+    if request.user.is_authenticated:
+        like, created = Like.objects.get_or_create(user=request.user, song=song)
+        if not created:
+            like.delete()
+        return JsonResponse({'liked': created})
+    else:
+        return JsonResponse({'error': 'User not authenticated'}, status=401)
