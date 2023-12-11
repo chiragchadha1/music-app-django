@@ -10,6 +10,14 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ song.title }}</h5>
                     <!-- Other song details -->
+                    <!-- "Like" and "Dislike" form for each song -->
+                    <form method="post" action="{% url 'main:like_song' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="song_id" value="{{ song.id }}">
+                        <button type="submit" class="btn btn-success btn-sm" name="action" value="like">Like</button>
+                        <button type="submit" class="btn btn-danger btn-sm" name="action" value="dislike">Dislike</button>
+                    </form>
+
                 </div>
             </div>
         </div>
